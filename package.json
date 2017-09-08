@@ -1,13 +1,13 @@
 {
-  "name": "bitcoinjs-lib",
+  "name": "atbcoinjs-lib",
   "version": "3.1.1",
-  "description": "Client-side Bitcoin JavaScript library",
+  "description": "Client-side atbcoin JavaScript library",
   "main": "./src/index.js",
   "engines": {
     "node": ">=4.0.0"
   },
   "keywords": [
-    "bitcoin",
+    "atbcoin",
     "browser",
     "client",
     "library"
