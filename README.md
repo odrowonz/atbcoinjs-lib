@@ -1,12 +1,12 @@
-# BitcoinJS (bitcoinjs-lib)
+# ATBCoinJS (atbcoinjs-lib)
 [![Build Status](https://travis-ci.org/bitcoinjs/bitcoinjs-lib.png?branch=master)](https://travis-ci.org/bitcoinjs/bitcoinjs-lib)
 [![NPM](https://img.shields.io/npm/v/bitcoinjs-lib.svg)](https://www.npmjs.org/package/bitcoinjs-lib)
 [![tip for next commit](https://tip4commit.com/projects/735.svg)](http://tip4commit.com/projects/735)
 
 [![js-standard-style](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
 
-The pure JavaScript Bitcoin library for node.js and browsers.
-Used by over a million wallet users and the backbone for almost all Bitcoin web wallets in production today.
+The pure JavaScript Atbcoin library for node.js and browsers.
+Used by over a million wallet users and the backbone for almost all Atbcoin web wallets in production today.
 
 
 ## Features
@@ -19,8 +19,8 @@ Used by over a million wallet users and the backbone for almost all Bitcoin web 
 - Principled: No support for browsers with crap RNG (IE < 11)
 - Standardized: Node community coding style, Browserify, Node's stdlib and Buffers.
 - Fast: Optimized code, uses typed arrays instead of byte arrays for performance.
-- Experiment-friendly: Bitcoin Mainnet and Testnet support.
-- Altcoin-ready: Capable of working with bitcoin-derived cryptocurrencies (such as Dogecoin).
+- Experiment-friendly: Atbcoin Mainnet and Testnet support.
+- Altcoin-ready: Capable of working with Atbcoin-derived cryptocurrencies (such as Dogecoin).
 
 
 ## Should I use this in production?
@@ -30,13 +30,13 @@ Master is not stable; it is our development branch, and [only tagged releases ma
 
 ## Installation
 ``` bash
-npm install bitcoinjs-lib
+npm install atbcoinjs-lib
 ```
 
 ## Setup
 ### Node.js
 ``` javascript
-var bitcoin = require('bitcoinjs-lib')
+var atbcoin = require('atbcoinjs-lib')
 ```
 
 ### Browser
@@ -49,7 +49,7 @@ From your repository, create an `index.js` file
 ``` javascript
 module.exports = {
   base58: require('bs58'),
-  bitcoin: require('bitcoinjs-lib'),
+  atbcoin: require('atbcoinjs-lib'),
   ecurve: require('ecurve'),
   BigInteger: require('bigi')
 }
@@ -57,7 +57,7 @@ module.exports = {
 
 Install each of the above packages locally
 ``` bash
-npm install bs58 bitcoinjs-lib ecurve bigi
+npm install bs58 atbcoinjs-lib ecurve bigi
 ```
 
 After installation, use browserify to compile `index.js` for use in the browser:
@@ -82,12 +82,12 @@ uglifyjs ... --mangle --reserved 'Array,BigInteger,Boolean,ECPair,Function,Numbe
 ### Typescript or VSCode users
 Type declarations for Typescript are available for version `^3.0.0` of the library.
 ``` bash
-npm install @types/bitcoinjs-lib
+npm install @types/atbcoinjs-lib
 ```
 
-You can now use `bitcoinjs-lib` as a typescript compliant library. 
+You can now use `atbcoinjs-lib` as a typescript compliant library. 
 ``` javascript
-import { HDNode, Transaction } from 'bitcoinjs-lib'
+import { HDNode, Transaction } from 'atbcoinjs-lib'
 ```
 
 For VSCode (and other editors), users are advised to install the type declarations, as Intellisense uses that information to help you code (autocompletion, static analysis).
