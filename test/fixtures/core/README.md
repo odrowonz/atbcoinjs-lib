@@ -11,14 +11,14 @@ This directory does not contain all the Bitcoin core tests.
 Missing core test data includes:
 
 * `alertTests.raw`
-	Bitcoin-js does not interact with the Bitcoin network directly.
+	ATBcoin-js does not interact with the Bitcoin network directly.
 
 * `tx_invalid.json`
-	Bitcoin-js can not evaluate Scripts, making testing this irrelevant.
+	ATBcoin-js can not evaluate Scripts, making testing this irrelevant.
 	It can decode valid Transactions, therefore `tx_valid.json` remains.
 
 * `script*.json`
-	Bitcoin-js can not evaluate Scripts, making testing this irrelevant.
+	ATBcoin-js can not evaluate Scripts, making testing this irrelevant.
 
 
 License
