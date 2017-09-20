@@ -14,12 +14,17 @@ function Block () {
   this.timestamp = 0
   this.bits = 0
   this.nonce = 0
+
+  this.vchBlockSig = 0
+  this.prevOutStakeHash = 0
+  this.prevOutStakeN = 0
 }
 
 Block.fromBuffer = function (buffer) {
   if (buffer.length < 80) throw new Error('Buffer too small (< 80 bytes)')
 
   var offset = 0
+
   function readSlice (n) {
     offset += n
     return buffer.slice(offset - n, offset)
@@ -37,6 +42,12 @@ Block.fromBuffer = function (buffer) {
     return i
   }
 
+  function readVarInt () {
+      var vi = varuint.decode(buffer, offset)
+      offset += varuint.decode.bytes
+      return vi
+  }
+
   var block = new Block()
   block.version = readInt32()
   block.prevHash = readSlice(32)
@@ -45,13 +56,12 @@ Block.fromBuffer = function (buffer) {
   block.bits = readUInt32()
   block.nonce = readUInt32()
 
-  if (buffer.length === 80) return block
+  var num = readVarInt()
+  block.vchBlockSig = readSlice(num)
+  block.prevOutStakeHash = readSlice(32)
+  block.prevOutStakeN = readUInt32(32)
 
-  function readVarInt () {
-    var vi = varuint.decode(buffer, offset)
-    offset += varuint.decode.bytes
-    return vi
-  }
+  if (buffer.length === offset) return block
 
   function readTransaction () {
     var tx = Transaction.fromBuffer(buffer.slice(offset), true)
@@ -70,10 +80,17 @@ Block.fromBuffer = function (buffer) {
   return block
 }
 
-Block.prototype.byteLength = function (headersOnly) {
-  if (headersOnly || !this.transactions) return 80
+Block.prototype.byteLength = function (headersOnly, forHashOnly) {
 
-  return 80 + varuint.encodingLength(this.transactions.length) + this.transactions.reduce(function (a, x) {
+  if (forHashOnly) {
+      return 80;
+  }
+
+  var headerLength = 80 + varuint.encodingLength(this.vchBlockSig.length) + this.vchBlockSig.length + 32 + 4;
+
+  if (headersOnly || !this.transactions) return headerLength;
+
+  return headerLength + varuint.encodingLength(this.transactions.length) + this.transactions.reduce(function (a, x) {
     return a + x.byteLength()
   }, 0)
 }
@@ -83,7 +100,7 @@ Block.fromHex = function (hex) {
 }
 
 Block.prototype.getHash = function () {
-  return bcrypto.hash256(this.toBuffer(true))
+  return bcrypto.hash256(this.toBuffer(true, true))
 }
 
 Block.prototype.getId = function () {
@@ -98,10 +115,10 @@ Block.prototype.getUTCDate = function () {
 }
 
 // TODO: buffer, offset compatibility
-Block.prototype.toBuffer = function (headersOnly) {
-  var buffer = Buffer.allocUnsafe(this.byteLength(headersOnly))
-
+Block.prototype.toBuffer = function (headersOnly, forHashOnly) {
+  var buffer = Buffer.allocUnsafe(this.byteLength(headersOnly, forHashOnly))
   var offset = 0
+
   function writeSlice (slice) {
     slice.copy(buffer, offset)
     offset += slice.length
@@ -111,6 +128,7 @@ Block.prototype.toBuffer = function (headersOnly) {
     buffer.writeInt32LE(i, offset)
     offset += 4
   }
+
   function writeUInt32 (i) {
     buffer.writeUInt32LE(i, offset)
     offset += 4
@@ -122,6 +140,17 @@ Block.prototype.toBuffer = function (headersOnly) {
   writeUInt32(this.timestamp)
   writeUInt32(this.bits)
   writeUInt32(this.nonce)
+
+  if (forHashOnly) {
+      return buffer;
+  }
+
+  varuint.encode(this.vchBlockSig.length, buffer, offset)
+  offset += varuint.encode.bytes
+
+  writeSlice(this.vchBlockSig)
+  writeSlice(this.prevOutStakeHash)
+  writeUInt32(this.prevOutStakeN)
 
   if (headersOnly || !this.transactions) return buffer
 

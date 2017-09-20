@@ -35,7 +35,7 @@ function ECPair (d, Q, options) {
   }
 
   this.compressed = options.compressed === undefined ? true : options.compressed
-  this.network = options.network || NETWORKS.bitcoin
+  this.network = options.network || NETWORKS.atbcoin
 }
 
 Object.defineProperty(ECPair.prototype, 'Q', {
@@ -71,7 +71,7 @@ ECPair.fromWIF = function (string, network) {
 
   // otherwise, assume a network object (or default to bitcoin)
   } else {
-    network = network || NETWORKS.bitcoin
+    network = network || NETWORKS.atbcoin
 
     if (version !== network.wif) throw new Error('Invalid network version')
   }
